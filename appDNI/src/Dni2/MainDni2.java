@@ -37,7 +37,13 @@ public class MainDni2 {
 			char letraDNI = dni.calcularLetra();
 			dni.setLetra(letraDNI);
 			//add el dni al array
-			arrayDnis[i] = dni;
+			if (i%2==0)//si la posicion es par
+			{
+				arrayDnis[i] = dni;//meto un DNI
+			} else {
+				arrayDnis[i] = new Nie();//si es impar, meto un NIE
+			}
+			
 			System.out.println("Tu numero: " + dni.getNumero() + " - " + dni.getLetra());
 		}
 		
@@ -48,9 +54,24 @@ public class MainDni2 {
 		int nummayor = Dni.obtenerDniMayor(arrayDnis);
 		System.out.println("El mayor DNI es " + nummayor);
 		
-		//
-		Nie nie = new nie();
-		arrayDnis[-1] = nie;
+		
+		for (Dni dni : arrayDnis)
+		{
+			if (dni instanceof Nie) {
+				System.out.println("ES UN NIE");
+			}else /*if (dni instanceof Dni)*/ {
+				System.out.println("ES UN DNI");
+			}
+			
+			
+		}
+		
+		// TODO haced un método estático QUE reciba un array
+		// de dnis y me diga cuántos NIEs hay en ese array
+		
+		public static contadorNie (Dni[] arrayDnis)
+		
+		for
 		
 	}
 
