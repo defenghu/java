@@ -37,7 +37,13 @@ public class MainDni2 {
 			char letraDNI = dni.calcularLetra();
 			dni.setLetra(letraDNI);
 			//add el dni al array
-			arrayDnis[i] = dni;
+			if (i%2==0)//si la posicion es par
+			{
+				arrayDnis[i] = dni;//meto un DNI
+			} else {
+				arrayDnis[i] = new Nie();//si es impar, meto un NIE
+			}
+			
 			System.out.println("Tu numero: " + dni.getNumero() + " - " + dni.getLetra());
 		}
 		
@@ -48,21 +54,31 @@ public class MainDni2 {
 		int nummayor = Dni.obtenerDniMayor(arrayDnis);
 		System.out.println("El mayor DNI es " + nummayor);
 		
-		//METER EN LA ÚLTIMA POSICIÓN DEL ARRAY DE DNIS, UN NIE
-		Nie nie = new (Nie);
-		arrayDnis[arrayDnis.length-1]= nie;
 		
-		//TODO MODIFICAR ESTE ALGORITGMO PARA QUE EN ARRAY DNIS HAYA UN DNI EN POSICIONES PARES Y UN NIE EN LAS PARES
-		
-		for (int i = 0; i < arrayDnis.length-1; i++) {
-			if ((i%2)==0) {
-				arrayDnis[i] = nie;
-			} else {
-				arrayDnis[i] = dni;
+		for (Dni dni : arrayDnis) {
+			if (dni instanceof Nie) {
+				System.out.println("ES UN NIE");
+			}else /*if (dni instanceof Dni)*/ {
+				System.out.println("ES UN DNI");
 			}
-			
 		}
+		 
 		
 	}
-
+	public static int contadorNie(Dni[] arraysDni) {
+		int cantidad = 0;
+		
+		for (Dni dni : arraysDni) {
+			
+			if (dni instanceof Nie) {
+				cantidad++;
+			}
+		}
+		
+		return cantidad;
+	}
 }
+		
+		//TODO MODIFICAD ESTE ALGORITMO PARA QUE EN 
+		//arrayDnis haya un DNI en las posiciones pares
+		//y un NIE en las impares
