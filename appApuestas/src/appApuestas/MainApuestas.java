@@ -6,6 +6,8 @@ public class MainApuestas {
 	static Scanner sc = new Scanner(System.in);
 
 	static int numeroApuestas = 0;
+	static boolean apostando = false;
+
 
 	static final int numeroAlumnos = 20;
 	static final int costeApuesta = 5;
@@ -22,9 +24,10 @@ public class MainApuestas {
 		System.out.println("Menu principal, elige que quieres hacer: ");
 		System.out.println("(1) Mostrar apuestas. ");
 		System.out.println("(2) Registrar una apuesta nueva.");
-		System.out.println("(3) Buscar Apuesta");// SE INTRODUCE EL NOMBRE DEL APOSTADOR Y SE INFORMA DE SU RESULTADO
+		System.out.println("(3) Buscar Apuesta.");// SE INTRODUCE EL NOMBRE DEL APOSTADOR Y SE INFORMA DE SU RESULTADO
 													// APOSTADO
-		System.out.println("(4) Finalizar programa. ");
+		System.out.println("(4) Borrar Apuesta. ");
+		System.out.println("(5) Finalizar programa. ");
 
 		int opcion = sc.nextInt();
 
@@ -39,6 +42,8 @@ public class MainApuestas {
 			buscarApostador();
 			break;
 		case 4:
+			borrarApostador();
+		case 5:
 			finalizarApp();
 			break;
 		}
@@ -58,8 +63,12 @@ public class MainApuestas {
 		System.out.println("Quién esta apostando: ");
 		String apostador = sc.next();
 
-		arrayApuestas[numeroApuestas] = new Apuestas(equipoLocal, equipoAway, apostador);
-		numeroApuestas++;
+		if (comprobarUsuario(apostador) == true) {
+			System.out.println("Este usuario ya ha registrado una apuesta.");
+		} else {
+			arrayApuestas[numeroApuestas] = new Apuestas(equipoLocal, equipoAway, apostador);
+			numeroApuestas++;
+		}
 
 		pantallaInicio();
 	}
@@ -67,10 +76,11 @@ public class MainApuestas {
 	public static void mostrarApuestas() {
 
 		for (int i = 0; i < numeroApuestas; i++) {
-
-			System.out.println("Apuesta " + (i + 1) + " ---- " + equipo1 + ": " + arrayApuestas[i].equipoLocal + " - "
-					+ equipo2 + ": " + arrayApuestas[i].equipoAway + " - Apostador: " + arrayApuestas[i].apostador);
-
+			if (arrayApuestas[i] != null) {
+				System.out.println("Apuesta " + (i + 1) + " ---- " + equipo1 + ": " + arrayApuestas[i].equipoLocal
+						+ " - " + equipo2 + ": " + arrayApuestas[i].equipoAway + " - Apostador: "
+						+ arrayApuestas[i].apostador);
+			}
 		}
 
 		if (numeroApuestas == 0) {
@@ -81,26 +91,76 @@ public class MainApuestas {
 	}
 
 	public static void buscarApostador() {
-		System.out.println("De qué usuario quieres saber la apuesta: ");
+		System.out.println("De qué usuario quieres saber la apuesta: (Sensible a mayúsculas).");
 		String busqueda = sc.next();
 		boolean apostando = false;
 
 		for (int i = 0; i < numeroApuestas; i++) {
-
-			String busquedaApostador = arrayApuestas[i].apostador;
-			if (busquedaApostador.equals(busqueda)) {
-				System.out.println("Apuesta " + (i + 1) + " ---- " + equipo1 + ": " + arrayApuestas[i].equipoLocal
-						+ " - " + equipo2 + ": " + arrayApuestas[i].equipoAway);
-				apostando = true;
+			if (arrayApuestas[i] != null) {
+				String busquedaApostador = arrayApuestas[i].apostador;
+				if (busquedaApostador.equals(busqueda)) {
+					System.out.println("Apuesta " + (i + 1) + " ---- " + equipo1 + ": " + arrayApuestas[i].equipoLocal
+							+ " - " + equipo2 + ": " + arrayApuestas[i].equipoAway);
+					apostando = true;
+				}
 			}
 
 		}
+
 		if (apostando == false) {
 			System.out.println("Este usuario no esta o has introducido el nombre mal");
 		}
 		pantallaInicio();
 	}
 
+	public static boolean comprobarUsuario(String args) {
+		boolean apostando = false;
+
+		for (int i = 0; i < numeroApuestas; i++) {
+			if (arrayApuestas[i] != null) {
+				String busquedaApostador = arrayApuestas[i].apostador;
+				if (busquedaApostador.equals(args)) {
+					apostando = true;
+				}
+			}
+		}
+		return apostando;
+	}
+
+	public static void borrarApostador() {
+		System.out.println("De qué usuario quieres borrar la apuesta: (Sensible a mayúsculas).");
+		String busqueda = sc.next();
+
+		borrarApuesta(busqueda);
+
+		pantallaInicio();
+	}
+	
+	public static void borrarApuesta(String busqueda) {
+	    int i = 0;
+	    while (!apostando && i < numeroApuestas) {
+	        if (arrayApuestas[i] != null) {
+	            String busquedaApostador = arrayApuestas[i].apostador;
+	            if (busquedaApostador.equals(busqueda)) {
+	                arrayApuestas[i] = null;
+	                apostando = true;
+	            }
+	        }
+	        i++;
+	    }
+	    if (apostando) {
+	        reorganizarArray(i);
+	    }
+	}
+
+	public static void reorganizarArray(int i) {
+	    for (int n = i; n < numeroApuestas - 1; n++) {
+	        arrayApuestas[n] = arrayApuestas[n + 1];
+	    }
+	    numeroApuestas--;
+	    apostando = false;
+	}
+	
 	public static void finalizarApp() {
 		System.out.println("FIN DE LA APLICACION");
 	}
