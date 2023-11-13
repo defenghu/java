@@ -1,5 +1,6 @@
 package appApuestas;
 
+import java.text.DecimalFormat;
 import java.util.Scanner;
 
 public class MainApuestas {
@@ -10,27 +11,40 @@ public class MainApuestas {
 
 
 	static final int numeroAlumnos = 20;
-	static final int costeApuesta = 5;
 	static final String equipo1 = "Real Madrid";
 	static final String equipo2 = "Valencia";
 	static Apuestas[] arrayApuestas = new Apuestas[numeroAlumnos];
 
+	private static final DecimalFormat df = new DecimalFormat("0.00");
+
 	public static void main(String[] args) {
-		pantallaInicio();
+		boolean salir = false;
+		do {
+			int opcion = pantallaInicio();
+			if (opcion == 7) {
+				salir = true;
+			}
+			opcionesApuestas(opcion);
+		} while (salir != true);
 	}
 
-	public static void pantallaInicio() {
+	public static int pantallaInicio() {
 
 		System.out.println("Menu principal, elige que quieres hacer: ");
 		System.out.println("(1) Mostrar apuestas. ");
 		System.out.println("(2) Registrar una apuesta nueva.");
-		System.out.println("(3) Buscar Apuesta.");// SE INTRODUCE EL NOMBRE DEL APOSTADOR Y SE INFORMA DE SU RESULTADO
-													// APOSTADO
+		System.out.println("(3) Buscar Apuesta.");
 		System.out.println("(4) Borrar Apuesta. ");
-		System.out.println("(5) Finalizar programa. ");
+		System.out.println("(5) Ver cantidad apostada. ");
+		System.out.println("(6) Resetear Apuestas. ");
+		System.out.println("(7) Finalizar programa. ");
 
 		int opcion = sc.nextInt();
 
+		return opcion;
+	}
+	
+	public static void opcionesApuestas(int opcion) {
 		switch (opcion) {
 		case 1:
 			mostrarApuestas();
@@ -43,15 +57,24 @@ public class MainApuestas {
 			break;
 		case 4:
 			borrarApostador();
-		case 5:
+			break;
+		case 5: 
+			verCantidadApostada();
+			break;
+		case 6:
+			resetearApuestas();
+			break;
+		case 7:
 			finalizarApp();
 			break;
+		default:
+			System.out.println("Has metido una opción inválida inténtalo otra vez");
 		}
 	}
 
 	public static void registrarApuesta() {
 
-		System.out.println("AVISO TE COMPROMETES A PAGAR LOS " + costeApuesta + " EUROS AL REGISTRAR UNA APUESTA.");
+		System.out.println("AVISO TE COMPROMETES A PAGAR EL DINERO AL REGISTRAR UNA APUESTA.");
 		System.out.println("Hoy juegan " + equipo1 + " VS " + equipo2 + ".");
 
 		System.out.println("Cuántos goles para " + equipo1 + " : ");
@@ -62,32 +85,31 @@ public class MainApuestas {
 
 		System.out.println("Quién esta apostando: ");
 		String apostador = sc.next();
+		
+		System.out.println("Que cantidad quieres apostar: ");
+		float cantidadApostada = sc.nextFloat();
 
 		if (comprobarUsuario(apostador) == true) {
 			System.out.println("Este usuario ya ha registrado una apuesta.");
 		} else {
-			arrayApuestas[numeroApuestas] = new Apuestas(equipoLocal, equipoAway, apostador);
+			arrayApuestas[numeroApuestas] = new Apuestas(equipoLocal, equipoAway, apostador, cantidadApostada);
 			numeroApuestas++;
 		}
-
-		pantallaInicio();
 	}
 
 	public static void mostrarApuestas() {
 
 		for (int i = 0; i < numeroApuestas; i++) {
 			if (arrayApuestas[i] != null) {
-				System.out.println("Apuesta " + (i + 1) + " ---- " + equipo1 + ": " + arrayApuestas[i].equipoLocal
-						+ " - " + equipo2 + ": " + arrayApuestas[i].equipoAway + " - Apostador: "
-						+ arrayApuestas[i].apostador);
+				System.out.println("Apuesta " + (i + 1) + " ---- " + equipo1 + ": " + arrayApuestas[i].getEquipoLocal()
+						+ " - " + equipo2 + ": " + arrayApuestas[i].getEquipoAway() + " - Apostador: "
+						+ arrayApuestas[i].getApostador());
 			}
 		}
 
 		if (numeroApuestas == 0) {
 			System.out.println("No hay ninguna apuesta.");
 		} // TODO else con for
-		System.out.println("Hay " + (numeroApuestas * costeApuesta) + " euros en juego.");
-		pantallaInicio();
 	}
 
 	public static void buscarApostador() {
@@ -97,10 +119,10 @@ public class MainApuestas {
 
 		for (int i = 0; i < numeroApuestas; i++) {
 			if (arrayApuestas[i] != null) {
-				String busquedaApostador = arrayApuestas[i].apostador;
+				String busquedaApostador = arrayApuestas[i].getApostador();
 				if (busquedaApostador.equals(busqueda)) {
-					System.out.println("Apuesta " + (i + 1) + " ---- " + equipo1 + ": " + arrayApuestas[i].equipoLocal
-							+ " - " + equipo2 + ": " + arrayApuestas[i].equipoAway);
+					System.out.println("Apuesta " + (i + 1) + " ---- " + equipo1 + ": " + arrayApuestas[i].getEquipoLocal()
+							+ " - " + equipo2 + ": " + arrayApuestas[i].getEquipoAway());
 					apostando = true;
 				}
 			}
@@ -110,7 +132,6 @@ public class MainApuestas {
 		if (apostando == false) {
 			System.out.println("Este usuario no esta o has introducido el nombre mal");
 		}
-		pantallaInicio();
 	}
 
 	public static boolean comprobarUsuario(String args) {
@@ -118,7 +139,7 @@ public class MainApuestas {
 
 		for (int i = 0; i < numeroApuestas; i++) {
 			if (arrayApuestas[i] != null) {
-				String busquedaApostador = arrayApuestas[i].apostador;
+				String busquedaApostador = arrayApuestas[i].getApostador();
 				if (busquedaApostador.equals(args)) {
 					apostando = true;
 				}
@@ -133,14 +154,13 @@ public class MainApuestas {
 
 		borrarApuesta(busqueda);
 
-		pantallaInicio();
 	}
 	
 	public static void borrarApuesta(String busqueda) {
 	    int i = 0;
 	    while (!apostando && i < numeroApuestas) {
 	        if (arrayApuestas[i] != null) {
-	            String busquedaApostador = arrayApuestas[i].apostador;
+	            String busquedaApostador = arrayApuestas[i].getApostador();
 	            if (busquedaApostador.equals(busqueda)) {
 	                arrayApuestas[i] = null;
 	                apostando = true;
@@ -159,6 +179,52 @@ public class MainApuestas {
 	    }
 	    numeroApuestas--;
 	    apostando = false;
+	}
+	
+	public static void verCantidadApostada() {
+		if (numeroApuestas != 0) {
+			calculadorCantidadApostada();
+		} else {
+			System.out.println("No hay apuestas, registra una apuesta para verlos");
+		}
+	}
+	
+	public static void calculadorCantidadApostada() {
+		float max = arrayApuestas[0].getCantidadApostada();
+		float min = arrayApuestas[0].getCantidadApostada();
+		float media = 0;
+		
+		for (int i = 1; i < numeroApuestas; i++) {
+			if (arrayApuestas[i].getCantidadApostada() > max) {
+				max = arrayApuestas[i].getCantidadApostada();
+			}
+			if (arrayApuestas[i].getCantidadApostada() < min) {
+				min = arrayApuestas[i].getCantidadApostada();
+			}
+			media = media + arrayApuestas[i].getCantidadApostada();
+		}
+		media = media / numeroApuestas;
+				
+		System.out.println("La apuesta maxima es: " + df.format(max) + ", la minima es: " + df.format(min) + " , la media de las apuestas es: " + df.format(media) + " y la cantidad total apostada es: " + df.format(totalApostado()));
+	}
+	
+	public static float totalApostado() {
+		float total = 0;
+		
+		for (int i = 0; i < numeroApuestas; i++) {
+			total = total + arrayApuestas[i].getCantidadApostada();
+		}
+		
+		return total;
+	}
+	
+	public static void resetearApuestas() {
+		for (int i = 0; i < numeroApuestas; i++) {
+			arrayApuestas[i] = null;
+
+		}
+		numeroApuestas = 0;// actualizo el numero de apuestas el cero!
+		System.out.println("Apuestas BORRADAS");
 	}
 	
 	public static void finalizarApp() {
