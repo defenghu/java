@@ -1,10 +1,10 @@
 package appApuestas;
 
 public class Apuestas {
-	public int equipoLocal;
-	public int equipoAway;
-	public String apostador;
-	public float cantidadApostada;
+	private int equipoLocal;
+	private int equipoAway;
+	private String apostador;
+	private float cantidadApostada;
 
 	public Apuestas(int equipoLocal, int equipoAway, String args, float cantidadApostada) {
 		super();
