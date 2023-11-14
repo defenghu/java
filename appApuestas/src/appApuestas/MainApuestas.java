@@ -4,21 +4,20 @@ import java.text.DecimalFormat;
 import java.util.Scanner;
 
 public class MainApuestas {
+	static final DecimalFormat df = new DecimalFormat("0.00");
 	static Scanner sc = new Scanner(System.in);
-
-	static int numeroApuestas = 0;
-	static boolean apostando = false;
-
 
 	static final int numeroAlumnos = 20;
 	static final String equipo1 = "Real Madrid";
 	static final String equipo2 = "Valencia";
-	static Apuestas[] arrayApuestas = new Apuestas[numeroAlumnos];
 
-	private static final DecimalFormat df = new DecimalFormat("0.00");
+	static int numeroApuestas = 0;
+	static boolean apostando = false;
+	static Apuestas[] arrayApuestas = new Apuestas[numeroAlumnos];
 
 	public static void main(String[] args) {
 		boolean salir = false;
+		
 		do {
 			int opcion = pantallaInicio();
 			if (opcion == 7) {
@@ -43,7 +42,7 @@ public class MainApuestas {
 
 		return opcion;
 	}
-	
+
 	public static void opcionesApuestas(int opcion) {
 		switch (opcion) {
 		case 1:
@@ -58,7 +57,7 @@ public class MainApuestas {
 		case 4:
 			borrarApostador();
 			break;
-		case 5: 
+		case 5:
 			verCantidadApostada();
 			break;
 		case 6:
@@ -85,7 +84,7 @@ public class MainApuestas {
 
 		System.out.println("Quién esta apostando: ");
 		String apostador = sc.next();
-		
+
 		System.out.println("Que cantidad quieres apostar: ");
 		float cantidadApostada = sc.nextFloat();
 
@@ -109,7 +108,7 @@ public class MainApuestas {
 
 		if (numeroApuestas == 0) {
 			System.out.println("No hay ninguna apuesta.");
-		} // TODO else con for
+		}
 	}
 
 	public static void buscarApostador() {
@@ -121,12 +120,12 @@ public class MainApuestas {
 			if (arrayApuestas[i] != null) {
 				String busquedaApostador = arrayApuestas[i].getApostador();
 				if (busquedaApostador.equals(busqueda)) {
-					System.out.println("Apuesta " + (i + 1) + " ---- " + equipo1 + ": " + arrayApuestas[i].getEquipoLocal()
-							+ " - " + equipo2 + ": " + arrayApuestas[i].getEquipoAway());
+					System.out.println(
+							"Apuesta " + (i + 1) + " ---- " + equipo1 + ": " + arrayApuestas[i].getEquipoLocal() + " - "
+									+ equipo2 + ": " + arrayApuestas[i].getEquipoAway());
 					apostando = true;
 				}
 			}
-
 		}
 
 		if (apostando == false) {
@@ -155,45 +154,49 @@ public class MainApuestas {
 		borrarApuesta(busqueda);
 
 	}
-	
+
 	public static void borrarApuesta(String busqueda) {
-	    int i = 0;
-	    while (!apostando && i < numeroApuestas) {
-	        if (arrayApuestas[i] != null) {
-	            String busquedaApostador = arrayApuestas[i].getApostador();
-	            if (busquedaApostador.equals(busqueda)) {
-	                arrayApuestas[i] = null;
-	                apostando = true;
-	            }
-	        }
-	        i++;
-	    }
-	    if (apostando) {
-	        reorganizarArray(i);
-	    }
+		int i = 0;
+
+		while (!apostando && i < numeroApuestas) {
+			if (arrayApuestas[i] != null) {
+				String busquedaApostador = arrayApuestas[i].getApostador();
+				if (busquedaApostador.equals(busqueda)) {
+					arrayApuestas[i] = null;
+					apostando = true;
+				}
+			}
+			i++;
+		}
+		if (apostando) {
+			reorganizarArray(i);
+		}
 	}
 
 	public static void reorganizarArray(int i) {
-	    for (int n = i; n < numeroApuestas - 1; n++) {
-	        arrayApuestas[n] = arrayApuestas[n + 1];
-	    }
-	    numeroApuestas--;
-	    apostando = false;
+
+		for (int n = i; n < numeroApuestas - 1; n++) {
+			arrayApuestas[n] = arrayApuestas[n + 1];
+		}
+
+		numeroApuestas--;
+		apostando = false;
 	}
-	
+
 	public static void verCantidadApostada() {
+
 		if (numeroApuestas != 0) {
 			calculadorCantidadApostada();
 		} else {
 			System.out.println("No hay apuestas, registra una apuesta para verlos");
 		}
 	}
-	
+
 	public static void calculadorCantidadApostada() {
 		float max = arrayApuestas[0].getCantidadApostada();
 		float min = arrayApuestas[0].getCantidadApostada();
 		float media = 0;
-		
+
 		for (int i = 1; i < numeroApuestas; i++) {
 			if (arrayApuestas[i].getCantidadApostada() > max) {
 				max = arrayApuestas[i].getCantidadApostada();
@@ -204,29 +207,32 @@ public class MainApuestas {
 			media = media + arrayApuestas[i].getCantidadApostada();
 		}
 		media = media / numeroApuestas;
-				
-		System.out.println("La apuesta maxima es: " + df.format(max) + ", la minima es: " + df.format(min) + " , la media de las apuestas es: " + df.format(media) + " y la cantidad total apostada es: " + df.format(totalApostado()));
+
+		System.out.println("La apuesta maxima es: " + df.format(max) + ", la minima es: " + df.format(min)
+				+ " , la media de las apuestas es: " + df.format(media) + " y la cantidad total apostada es: "
+				+ df.format(totalApostado()));
 	}
-	
+
 	public static float totalApostado() {
 		float total = 0;
-		
+
 		for (int i = 0; i < numeroApuestas; i++) {
 			total = total + arrayApuestas[i].getCantidadApostada();
 		}
-		
+
 		return total;
 	}
-	
+
 	public static void resetearApuestas() {
+
 		for (int i = 0; i < numeroApuestas; i++) {
 			arrayApuestas[i] = null;
 
 		}
-		numeroApuestas = 0;// actualizo el numero de apuestas el cero!
+		numeroApuestas = 0;
 		System.out.println("Apuestas BORRADAS");
 	}
-	
+
 	public static void finalizarApp() {
 		System.out.println("FIN DE LA APLICACION");
 	}
