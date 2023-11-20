@@ -125,7 +125,7 @@ public class MainFunciones {
 			notaNominal = MainFuncionesEnum.NOTABLE;
 		} else if (nota >= 9 && nota < 10) {
 			notaNominal = MainFuncionesEnum.SOBRESALIENTE;
-		} else if (nota == 10) {
+		} else {
 			notaNominal = MainFuncionesEnum.MATRICULA;
 		}
 		
