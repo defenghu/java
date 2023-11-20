@@ -8,7 +8,7 @@ public class MainFunciones {
 		
 		//VARIABLES PARA TESTS
 		String cadena = "Ejemplo cadena aaa";
-		int numero = 9;
+		int numero = 10;
 		char caracter = 'a';
 		
 		//TESTS
@@ -111,21 +111,24 @@ public class MainFunciones {
 	 * @param nota
 	 * @return notaNominal
 	 */
-	public static String notaNominal(double nota) {
+	public static MainFuncionesEnum notaNominal(double nota) {
 		
-		String notaNominal = "";
+		MainFuncionesEnum notaNominal = null;
 		
 		if (nota < 5) {
-			notaNominal = "Suspenso";
+			notaNominal = MainFuncionesEnum.SUSPENSO;
 		} else if (nota >= 5 && nota < 6) {
-			notaNominal = "Suficiente";
+			notaNominal = MainFuncionesEnum.SUFICIENTE;
 		} else if (nota >= 6 && nota < 7) {
-			notaNominal = "Bien";
+			notaNominal = MainFuncionesEnum.BIEN;
 		} else if (nota >= 7 && nota < 9) {
-			notaNominal = "Notable";
-		} else if (nota >= 9 ) {
-			notaNominal = "Sobresaliente";
+			notaNominal = MainFuncionesEnum.NOTABLE;
+		} else if (nota >= 9 && nota < 10) {
+			notaNominal = MainFuncionesEnum.SOBRESALIENTE;
+		} else if (nota == 10) {
+			notaNominal = MainFuncionesEnum.MATRICULA;
 		}
+		
 		return notaNominal;
 	}
 	
