@@ -29,4 +29,25 @@ public class Estudiante extends Persona {
 	public Estudiante() {
 		super();
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		boolean equals = false;
+		
+		if (obj!=null) {
+			if (obj instanceof Estudiante e) {
+				if (this.getNombre().equals(e.getNombre()) && this.getEmail().equals(e.getNombre())
+					&&	this.getTelefono()==(e.getTelefono())
+					&&	this.getNumero()==(e.getNumero())
+					&&	this.getPromedio()==(e.getPromedio())) {
+					
+					equals = true;
+					
+				}
+			}
+		}
+		
+		return equals;
+	}
+	
 }
