@@ -1,6 +1,12 @@
 package apuestasbd.modelo;
 
 public class Usuario {
+	
+	@Override
+	public String toString() {
+		return "Usuario [id=" + id + ", nombre=" + nombre + ", email=" + email + ", password=" + password + "]";
+	}
+
 	private int id;
 	private String nombre;
 	private String email;
