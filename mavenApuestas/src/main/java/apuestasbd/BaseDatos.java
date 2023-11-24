@@ -34,9 +34,8 @@ public class BaseDatos {
 	public static List<Usuario> leerUsuarios() {
 		List<Usuario> listaUsuarios = null;
 
-		Connection connection = null;
-		try {
-			connection = DriverManager.getConnection(SERVER_CONNECTION, BaseDatos.USER, BaseDatos.PASSWORD);
+		try (Connection connection = DriverManager.getConnection(SERVER_CONNECTION, BaseDatos.USER,
+				BaseDatos.PASSWORD);) {
 			System.out.println("Conexión realizada");
 			Statement st = connection.createStatement();
 			ResultSet rs = st.executeQuery(READ_USERS);
@@ -110,25 +109,24 @@ public class BaseDatos {
 		return usuario;
 
 	}
-	
+
 	public static boolean insertarUsuario(Usuario user) {
 		boolean done = false;
 
 		Connection connection = null;
-		
+
 		try {
-			
+
 			connection = DriverManager.getConnection(SERVER_CONNECTION, USER, PASSWORD);
 			System.out.println("Conexión realizada");
-			
+
 			PreparedStatement preparedSt = connection.prepareStatement(INSERT_USER);
-			
+
 			preparedSt.setString(1, user.getNombre());
 			preparedSt.setString(2, user.getEmail());
 			preparedSt.setString(2, user.getPassword());
-			
+
 			preparedSt.executeUpdate();
-			
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
