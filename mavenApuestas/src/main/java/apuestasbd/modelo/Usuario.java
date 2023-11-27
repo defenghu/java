@@ -2,33 +2,10 @@ package apuestasbd.modelo;
 
 public class Usuario {
 	
-	@Override
-	public String toString() {
-		return "Usuario [id=" + id + ", nombre=" + nombre + ", email=" + email + ", password=" + password + "]";
-	}
-
 	private int id;
 	private String nombre;
 	private String email;
 	private String password;
-	
-	public Usuario() {
-		super();
-	}
-	
-	public Usuario(int id, String nombre, String email, String password) {
-		super();
-		this.id = id;
-		this.nombre = nombre;
-		this.email = email;
-		this.password = password;
-	}
-	
-	public Usuario(String email, String password) {
-		super();
-		this.email = email;
-		this.password = password;
-	}
 	
 	public int getId() {
 		return id;
@@ -61,5 +38,24 @@ public class Usuario {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public Usuario(int id, String nombre, String email, String password) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.email = email;
+		this.password = password;
+	}
+	
+	public Usuario() {
+		super();
+	}
+
+	@Override
+	public String toString() {
+		return "Usuario [id=" + id + ", nombre=" + nombre + ", email=" + email + ", password=" + password + "]";
+	}
+	
+	
 	
 }

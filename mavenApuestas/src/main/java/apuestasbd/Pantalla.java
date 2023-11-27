@@ -6,26 +6,43 @@ import apuestasbd.modelo.Usuario;
 
 public class Pantalla {
 
+	// TODO hacemos 2 métodos (1 por menú)
+	// public static
+
+	// 1 con el menú inicio
+	// con opciones registrar
+	// login
+
+	// 2 con el menú principal
+	// 1 registrar apuesta
+	// 2 ajustes usuario
+	// 3 consultar apuestas
+
+	// MOSTRAR EL MNÚ Y DEVOLVERME LA OPCIÓN
+	// PULSADA POR EL USUARIO (INT)
+
 	static Scanner sc = new Scanner(System.in);
+
 	
-	public static Usuario pedirCredenciales() {
+	public static Usuario pedirCredenciales ()
+	{
+		Usuario usuario = null;
 		
+		//TODO pedid al usuario su email y password
+		//y devolverlo "envuelto" en un objeto usuario
+			System.out.println("Email usuario:");
+			String email = sc.next();
 		
-		
-		System.out.println("Email de usuario:");
-		String email = sc.next();
-		
-		System.out.println("Contraseña:");
-		String pass = sc.next();
-		
-		Usuario usuario = new Usuario();
-		usuario.setPassword(pass);
-		usuario.setEmail(email);
+			System.out.println("Contraseña:");
+			String pass = sc.next();
+			
+			usuario = new Usuario();
+			usuario.setPassword(pass);
+			usuario.setEmail(email);
 		
 		return usuario;
-		
 	}
-
+	
 	public static int menuPantallaInicio() {
 
 		int opcionLeida = 0;
