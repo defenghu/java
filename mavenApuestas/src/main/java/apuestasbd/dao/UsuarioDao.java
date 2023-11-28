@@ -11,6 +11,7 @@ import java.util.List;
 
 import apuestasbd.BaseDatos;
 import apuestasbd.modelo.Usuario;
+
 /**
  * En esta clase, vamos a agurpar todas las operaciones de base datos relaciones
  * con el Usuario
@@ -20,8 +21,8 @@ public class UsuarioDao {
 	public static final String INSTRUCCION_LEER_USUARIOS = "SELECT * FROM bdapuestas.usuarios;";
 	public static final String INSTRUCCION_LEER_USUARIOS_FILTRO = "SELECT * FROM bdapuestas.usuarios WHERE email=? AND password=?";
 	public static final String INSTRUCCION_INSERTAR_USUARIO = "INSERT INTO `bdapuestas`.`usuarios` (`nombre`, `email`, `password`) VALUES (?,?,?);";
-	public static final String INSTRUCCION_BORRAR_USUARIO = "DELETE FROM bdapuestas.usuarios WHERE email = ?";
-	public static final String INSTRUCCION_UPDATE_USUARIO = "UPDATE FROM bdapuestas.usuarios SET password=? WHERE email = ?";
+	public static final String INSTRUCCION_BORRAR_USUARIO = "DELETE FROM bdapuestas.usuarios WHERE email = ?;";
+	public static final String INSTRUCCION_MODIFICAR_PASSWORD_USUARIO = "UPDATE bdapuestas.usuarios SET password=? WHERE email=?;";
 
 	/**
 	 * Méotod que reeucpera de la base de datos el listado de usuarios registrados
@@ -101,7 +102,13 @@ public class UsuarioDao {
 		return usuario;
 
 	}
-
+	
+	
+/**
+ * Método que inserta un usuario en la base de datos
+ * @param usuario el dato que queremos guardar en base de datos
+ * @return true si el usuario se insertó con éxito o false en caso contrario
+ */
 	public boolean insertarUsuario(Usuario usuario) {
 		boolean insertado = false;
 
@@ -132,39 +139,59 @@ public class UsuarioDao {
 	public boolean borrarUsuario(String email) {
 		boolean borrado = false;
 
-		try (Connection conexion = BaseDatos.obtenerConexion()) {
+		try (Connection conexion = BaseDatos.obtenerConexion();) {
+			PreparedStatement borrarUsuario = conexion.prepareStatement(INSTRUCCION_BORRAR_USUARIO);
+			borrarUsuario.setString(1, email);
+			int nFila = borrarUsuario.executeUpdate();
+			if (nFila == 1) {
+				borrado = true;
+			}
 
-			System.out.println("Conexión realizada");
-			PreparedStatement instruccion = conexion.prepareStatement(INSTRUCCION_BORRAR_USUARIO);
-			instruccion.setString(1, email);
-			int nfilasborradas = instruccion.executeUpdate();
-			borrado = (nfilasborradas == 1);
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-
 		}
+
 		return borrado;
 	}
 	// TODO modificar contraseña usuario - UPDATE - ELHIEZER
 
-	public boolean modificarUsuario(String email, String nuevapwd) {
+	public boolean modificarPasswordUsuario(String email, String nuevapwd) {
 		boolean modificado = false;
+		
+		try (Connection conexion = BaseDatos.obtenerConexion();) {
 
-		try (Connection conexion = BaseDatos.obtenerConexion()) {
+			PreparedStatement modificarPassword = conexion.prepareStatement(INSTRUCCION_MODIFICAR_PASSWORD_USUARIO);
+			modificarPassword.setString(1, nuevapwd);
+			modificarPassword.setString(2, email);
+			int nfilasModificadas = modificarPassword.executeUpdate();
+			modificado = (nfilasModificadas == 1);
 
-			System.out.println("Conexión realizada");
-			//INSTRUCCION_UPDATE_USUARIO = "UPDATE FROM bdapuestas.usuarios SET password=? WHERE email = ?";
-			PreparedStatement instruccion = conexion.prepareStatement(INSTRUCCION_UPDATE_USUARIO);
-			instruccion.setString(1, nuevapwd);
-			instruccion.setString(2, email);
-			int nfilasmodificado = instruccion.executeUpdate();
-			modificado = (nfilasmodificado == 1);
 		} catch (SQLException e) {
 			e.printStackTrace();
 
 		}
 
 		return modificado;
+	}
+	
+	
+	public static void main(String[] args) {
+		UsuarioDao usuarioDao = new UsuarioDao();
+		/*boolean borrado = usuarioDao.borrarUsuario("valex@gmail.com");
+		if (borrado)
+		{
+			System.out.println("se borró el usuario con email valex@gmail.com");
+		} else {
+			System.out.println("NO se borró el usuario con email valex@gmail.com");
+		}*/
+		
+		boolean modificado = usuarioDao.modificarPasswordUsuario("esquesolotengo2@hotmail.es", "laAlarmafallo");
+		if (modificado)
+		{
+			System.out.println("password Laura actualizada");
+		} else {
+			System.out.println("password Laura NO actualizada");
+		}
 	}
 
 }
