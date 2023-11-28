@@ -6,34 +6,17 @@ import apuestasbd.dao.UsuarioDao;
 import apuestasbd.modelo.Usuario;
 
 public class MainApuestasBd {
-
 	public static void main(String[] args) {
-		
-		/**
-		 * System.out.println("(1) Acceso. ");
-		System.out.println("(2) Registro");
-		System.out.println("(3) Salir. ");
-		 */
 		boolean salir = false;
+
 		do {
-		
-			int opcionInicio = Pantalla.menuPantallaInicio();
-			switch (opcionInicio) { 
-			case 1: //ACCESO 
-				System.out.println("Quiere Acceder");
-				break;
-			case 2: //REGISTRO
-				System.out.println("Quiere Registrarse");
-				registroUsuario ();
-			break;
-			case 3: //SALIR
-				System.out.println("HASTA PRONTO! Saliendo...");
+			int opcion = Pantalla.menuInicio();
+			if (opcion == 9) {
 				salir = true;
-				break;
-			default:
-				System.out.println("OPCIÓN INCORRECTA");
 			}
-		}while (!salir);
+			Opciones.opcionesInicio(opcion);
+
+		} while (!salir);
 	}
 	
 	 public static void registroUsuario ()
@@ -57,8 +40,10 @@ public class MainApuestasBd {
 		 us = usDao.buscarExiste(us.getEmail(), us.getPassword());
 		 
 		 if(us!=null) {
-			 //menu principal
+			 System.out.println("Accedido con éxito!");
+			 Pantalla.menuPantallaPrincipal();
 		 } else {
+			 System.out.println("1");
 			 login();
 		 }
 		 
