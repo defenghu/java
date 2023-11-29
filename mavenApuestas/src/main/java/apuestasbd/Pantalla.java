@@ -2,96 +2,183 @@ package apuestasbd;
 
 import java.util.Scanner;
 
+import apuestasbd.dao.UsuarioDao;
 import apuestasbd.modelo.Usuario;
-import org.w3c.dom.ls.LSOutput;
 
 public class Pantalla {
+    static Scanner sc = new Scanner(System.in);
+	static UsuarioDao usDao = new UsuarioDao();
+    
+    /************************
+     **Display de los menus**
+     ************************/
+    
     public static int menuInicio() {
 
         System.out.println("Menu principal, elige que quieres hacer: ");
         System.out.println("(1) Iniciar Sesión ");
         System.out.println("(2) Registrar una cuenta nueva.");
-        System.out.println("(3) Salir");
+        System.out.println("(9) Salir");
 
         return sc.nextInt();
     }
+    
+    public static void menuLogin() {
+		 Usuario us = pedirCredenciales();
+		 
+		 us = usDao.buscarExiste(us.getEmail(), us.getPassword());
+		 
+		 if(us.equals(null)) {
+			 System.out.println("1");
+			 menuLogin();
+		 } else {
+			 System.out.println("Accedido con éxito!");
+			 MainApuestasBd.menuPrincipal();
+		 }
+    }
+    
+    public static void menuRegistro() {
+
+		 Usuario user = pedirUsuarioNuevo();
+		 
+	 }
+		 
 
     public static int menuPantallaPrincipal() {
 
         System.out.println("Menú principal");
-        System.out.println("(1) Registrar Apuesta.");
-        System.out.println("(2) Mostrar Apuestas,");
-        System.out.println("(3) Ajustes Usuario.");
+        System.out.println("(1) Ver Apuestas.");
+        System.out.println("(2) Ajustes Usuario.");
         System.out.println("(9) Salir.");
 
         return sc.nextInt();
     }
+    
+    public static int menuAjustesCuenta() {
 
-    // TODO hacemos 2 métodos (1 por menú)
-    // public static
+        System.out.println("Ajustes cuenta.");
+        System.out.println("(1) Cambiar contraseña.");
+        System.out.println("(2) Cambiar nombre usuario.");
+        System.out.println("(3) Borrar cuenta.");
+        System.out.println("(9) Atrás.");
 
-    // 1 con el menú inicio
-    // con opciones registrar
-    // login
-
-    // 2 con el menú principal
-    // 1 registrar apuesta
-    // 2 ajustes usuario
-    // 3 consultar apuestas
-
-    // MOSTRAR EL MNÚ Y DEVOLVERME LA OPCIÓN
-    // PULSADA POR EL USUARIO (INT)
-
-    static Scanner sc = new Scanner(System.in);
-
-    public static Usuario pedirUsuarioNuevo() {
-        Usuario usuario = null;
-
-        Scanner scanner = new Scanner(System.in);
-        String nombre, email, password = null;
-        System.out.println("Introduzca nombre de usuario");
-        nombre = scanner.next();
-        System.out.println("Introduzca email");
-        email = scanner.next();
-        System.out.println("Introduzca contraseña");
-        password = scanner.next();
-
-        usuario = new Usuario(0, nombre, email, password);
-
-        return usuario;
+        return sc.nextInt();
     }
+    
+    public static void menuModificarPassword() {
+    	
+        System.out.println("Modificar Password.");
+        System.out.println("Introduzca su email: ");
+        String email = sc.next();
+        boolean coinciden = false;
+        
+        while (!coinciden) {
+        	String pass = confirmarPassword();
+        	if (pass.equals(null)) {
+    			System.out.println("No coinciden las contraseñas inténtalo otra vez.");
+    		} else {
+    			usDao.modificarPasswordUsuario(email, pass);
+    			coinciden = true;
+    		}
+		}
+        System.out.println("Contraseña modificada con éxito");
+    }
+    
+    public static int menuApuestasPrincipal() {
 
+        System.out.println("Menú Apuestas");
+        System.out.println("(1) Mis Apuestas.");
+        System.out.println("(2) Mostrar todas Apuestas,");
+        System.out.println("(9) Atrás.");
+
+        return sc.nextInt();
+    }
+    
+    public static int menuMisApuestas() {
+
+        System.out.println("Mis Apuestas");
+        System.out.println("(1) Crear nueva Apuesta.");
+        System.out.println("(2) Mostrar mis Apuestas.");
+        System.out.println("(3) Modificar una apuesta.");
+        System.out.println("(4) Borrar una apuesta.");
+        System.out.println("(9) Atrás.");
+
+        return sc.nextInt();
+    }
+    public static int menuTodasApuestas() {
+
+        System.out.println("Todas las Apuestas");
+        System.out.println("Quieres que muestre las estadísticas de las Apuestas también?");
+        System.out.println("(1) Sí.");
+        System.out.println("(2) No.");
+        System.out.println("(9) Atrás.");
+
+        return sc.nextInt();
+    }
+    
+    /*************************
+     **Acciones de los menus**
+     *************************/
+    
+    //FUNCION ACCESO
     public static Usuario pedirCredenciales() {
-        Usuario usuario = null;
 
-        //TODO pedid al usuario su email y password
-        //y devolverlo "envuelto" en un objeto usuario
         System.out.println("Email usuario:");
         String email = sc.next();
 
         System.out.println("Contraseña:");
         String pass = sc.next();
 
-        usuario = new Usuario();
-        usuario.setPassword(pass);
-        usuario.setEmail(email);
+        Usuario user = new Usuario();
+        user.setPassword(pass);
+        user.setEmail(email);
 
-        return usuario;
+        return user;
     }
+  
+    //FUNCION REGISTRO
+    public static Usuario pedirUsuarioNuevo() {
 
-    public static int menuPantallaInicio() {
+        String nombre, email, password = null;
+        System.out.println("Introduzca nombre de usuario");
+        nombre = sc.next();
+        System.out.println("Introduzca email");
+        email = sc.next();
+        System.out.println("Introduzca contraseña");
+        password = sc.next();
 
-        int opcionLeida = 0;
-        System.out.println("Inicio");
-        System.out.println("(1) Acceso. ");
-        System.out.println("(2) Registro");
-        System.out.println("(9) Salir. ");
+        Usuario user = new Usuario(0, nombre, email, password);
 
-        opcionLeida = sc.nextInt();
-
-        return opcionLeida;
+        return user;
     }
-
+    
+    //FUNCION CAMBIAR CONTRASEÑA
+    
+    public static String confirmarPassword() {
+		String pass = null;
+    	
+		System.out.println("Introduzca su nueva password: ");
+		String passone = sc.next();
+		System.out.println("Confirme su nueva password: ");
+		String passtwo = sc.next();
+		
+		if(passtwo.equals(passone)) {
+			pass = passtwo;
+		} 
+		
+		return pass;
+	}
+    
+    public static boolean modificarPassword(String email, String nuevapwd) {
+    	UsuarioDao usDao = new UsuarioDao();
+    	
+    	return usDao.modificarPasswordUsuario(email, nuevapwd);
+		
+	}
+    
+    
+    
+    
 
 
 }

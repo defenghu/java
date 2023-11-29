@@ -23,9 +23,6 @@ public class BaseDatos {
 	
 	
 	
-	
-	
-	
 	public static Connection obtenerConexion () throws SQLException
 	{
 		Connection connection = null;
