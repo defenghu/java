@@ -1,17 +1,14 @@
-123
-1231232131
-213123
-123
-123213
-213213
-2131
-232
-41
-445
-4
-6
-123
-21
-312
-312
-3
+'Real Madrid', 'Barcelona', 'Atlético de Madrid', 'Sevilla',
+       'Villarreal', 'Real Sociedad', 'Granada', 'Getafe', 'Valencia',
+       'Osasuna', 'Athletic Club', 'Levante', 'Valladolid', 'Eibar',
+       'Betis', 'Alavés', 'Celta de Vigo', 'Leganés', 'Mallorca',
+       'Espanyol', 'Girona', 'Huesca', 'Rayo Vallecano',
+       'Deportivo de La Coruña', 'Las Palmas', 'Málaga',
+       'Sporting de Gijón', 'Elche', 'Almería', 'Córdoba', 'Zaragoza',
+       'Racing de Santander', 'Hércules', 'Tenerife', 'Xerez', 'Numancia',
+       'Recreativo de Huelva', 'Murcia', 'Gimnàstic de Tarragona',
+       'Cádiz', 'Albacete', 'Oviedo', 'Extremadura', 'Salamanca',
+       'Compostela', 'Mérida', 'Logroñés', 'Lleida', 'Real Burgos',
+       'Castellón', 'Sabadell', 'AD Almería', 'Burgos', 'Pontevedra',
+       'Jaén', 'Condal', 'Cultural Leonesa', 'Atlético Tetuán',
+       'Alcoyano', 'Arenas de Guecho', 'Real Unión', 'Europa'
